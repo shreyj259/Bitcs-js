@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+</head>
+<body>
+
+    <form id="form" >
+        <label for="email">Email : </label>
+        <input type="email" name="email" id="email"><br><br>
+        <label for="password">Password : </label>
+        <input type="password" name="password" id="password"> <br><br>
+
+        <label for="sex"> Sex : </label>
+        <select name="sex" id="sex">
+            <option value="male">male</option>
+            <option value="female">female</option>
+            <option value="other">other</option>
+        </select> <br><br>
+
+        <label for="">Role : </label>
+        <label for="user">User</label>
+        <input type="radio" value="user" checked name="role" id="user" value="user"> 
+        <label for="admin">Admin</label>
+        <input type="radio" value="admin"  name="role" id="admin" value="admin">
+       <br><br>
+
+        <label for="Permission">Permission : </label>
+        <label for="permision1">Permission 1 </label>
+        <input type="checkbox" name="Permission" value="permision1" id="permision1">
+        <label for="permision2">Permission 2 </label>
+        <input type="checkbox" name="Permission" value="permision2" id="permision2">
+        <label for="permision3">Permission 3 </label>
+        <input type="checkbox" name="Permission" value="permision3" id="permision3">
+        <label for="permision4">Permission 4 </label>
+        <input type="checkbox" name="Permission" value="permision4" id="permision4">
+        <br><br>
+        <input type="submit">
+    </form>
+
+    <div id="result"></div>
+    
+    <script>
+
+        let form=document.querySelector('#form');
+        let email=document.querySelector('#email');
+        let pass=document.querySelector('#password');
+        let sex=document.querySelector("#sex");
+        let radio = document.querySelectorAll('input[name="role"]');
+        let permissions=document.querySelectorAll('input[name="Permission"]')
+        let result=document.querySelector("#result");
+        let numberOfCheckbox=0;
+        let selectedRadioValue;  
+        let selectedCheckbox;
+        var strongRegex = new RegExp("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})");
+
+        form.addEventListener("submit",handleSubmit)
+        function handleSubmit(e){
+            e.preventDefault();
+            selectedRadioValue=[...radio].filter(item=>item.checked==true)[0].value;
+            numberOfCheckbox=[...permissions].reduce((total,item)=>{
+                return item.checked===true?total+1:total;
+            },0)
+
+            selectedCheckbox=[...permissions].map(item=>item.checked?item.value:null).join(" ");
+            console.log(selectedCheckbox)
+            
+            if(email.value===""){
+                alert("Email can't be empty");
+                return ;
+            }
+
+            if(pass.value===""){
+                alert("Password can't be empty");
+                return ;
+            }
+
+            if(!pass.value.match("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})")){
+                alert("Password must contain atleast 6 characters including atleast one lower case, one upper case and one numeric value")
+                return ;
+            }
+
+            if(numberOfCheckbox<2){
+                alert("Atleast 2 permissions should be taken");
+                return ;
+            }
+
+            const resultData=`<div>Email : ${email.value} <br> Password : ${pass.value} <br> Sex : ${sex.value} <br> Role : ${selectedRadioValue} <br> Permission : ${selectedCheckbox} <br> <button>Confirm</button> <div>`;
+            form.remove();   
+            result.innerHTML=resultData;    
+        }
+    </script>
+</body>
+</html>

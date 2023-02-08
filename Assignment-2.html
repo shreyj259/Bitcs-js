@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+        class Person{
+            constructor(name,age, salary,sex){
+                this.name = name;
+                this.age = age;
+                this.salary = salary;
+                this.sex = sex;
+            }
+
+            static customSort(arr,field,order){
+                if (order=== "asc"){
+                    return this.quickSortAsc(arr,0,arr.length-1,field);
+                }else{
+                    return this.quickSortDesc(arr,0,arr.length-1,field);
+                }
+            }
+
+            static quickSortAsc(arr,low,high,field){
+
+                if(low<high){
+                    let pivot=this.ascPartition(arr,low,high,field);
+                     this.quickSortAsc(arr,low,pivot-1,field);
+                   this.quickSortAsc(arr,pivot+1,high,field);
+                }
+                return [...arr];
+            }
+
+            static quickSortDesc(arr,low,high,field){
+
+                if(low<high){
+                    let pivot=this.descPartition(arr,low,high,field);
+                     this.quickSortAsc(arr,low,pivot-1,field);
+                   this.quickSortAsc(arr,pivot+1,high,field);
+                }
+                return [...arr];
+            }
+
+            static ascPartition(arr,low,high,field){
+                let pivot=arr[high][field];
+                let i=low-1;
+                for(let j=low;j<=high-1;j++){
+                    if(arr[j][field]<pivot){
+                        i++;
+                        this.swap(arr,i,j);
+                    }
+                }
+                this.swap(arr,i+1,high)
+                return i+1;
+            }
+
+            static descPartition(arr,low,high,field){
+                let pivot=arr[high][field];
+                let i=low-1;
+                for(let j=low;j<=high-1;j++){
+                    if(arr[j][field]>pivot){
+                        i++;
+                        this.swap(arr,i,j);
+                    }
+                }
+                this.swap(arr,i+1,high)
+                return i+1;
+            }
+            
+
+            static swap(arr,i,j){
+                let temp=arr[i];
+                arr[i]=arr[j];
+                arr[j]=temp;
+            }
+        }
+
+
+        let arr=[];
+        arr.push(new Person("shrey",21,50000,"male"));
+        arr.push(new Person("juju",16,20000,"female"));
+        arr.push(new Person("monu",23,60000,"male"));
+        arr.push(new Person("vanshika",19,45000,"female"));
+
+        console.log(arr);
+
+        console.log(Person.customSort(arr,"age","desc"))
+
+        console.log(arr);
+    </script>
+</body>
+</html>
